@@ -1,10 +1,11 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 from users.models import User
 from product.models import Product
 from uuid import uuid4
-from django.core.validators import MinValueValidator
-
 # Create your models here.
+
+
 class Cart(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     user = models.OneToOneField(
@@ -13,7 +14,7 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"Cart of {self.user.first_name}"
-    
+
 
 class CartItem(models.Model):
     cart = models.ForeignKey(
@@ -26,20 +27,20 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
-    
+
 
 class Order(models.Model):
     NOT_PAID = 'Not Paid'
     READY_TO_SHIP = 'Ready To Ship'
     SHIPPED = 'Shipped'
     DELIVERED = 'Delivered'
-    CANCELED = 'Canceled'
+    CANCELLED = 'Cancelled'
     STATUS_CHOICES = [
         (NOT_PAID, 'Not Paid'),
         (READY_TO_SHIP, 'Ready To Ship'),
         (SHIPPED, 'Shipped'),
         (DELIVERED, 'Delivered'),
-        (CANCELED, 'Canceled')
+        (CANCELLED, 'Cancelled'),
     ]
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     user = models.ForeignKey(
